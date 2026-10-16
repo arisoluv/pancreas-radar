@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pancreas Radar</title>
+<link rel="alternate" type="application/rss+xml" title="Weekly digest" href="digest.xml">
+<style>
+:root {
+  color-scheme: light;
+  --bg: #f6f5f2; --surface: #fcfcfb; --border: #e3e1db;
+  --text: #0b0b0b; --text-2: #52514e; --muted: #7a7974;
+  --accent: #2a78d6; --accent-soft: #e6effa; --bar: #2a78d6;
+  --warn-bg: #fff4dc; --warn-text: #6b4a00;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: #121211; --surface: #1a1a19; --border: #2e2e2c;
+    --text: #f0efec; --text-2: #c3c2b7; --muted: #8f8e86;
+    --accent: #6aa6ee; --accent-soft: #1d2a3a; --bar: #3987e5;
+    --warn-bg: #3a2f14; --warn-text: #f3d48a;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #121211; --surface: #1a1a19; --border: #2e2e2c;
+  --text: #f0efec; --text-2: #c3c2b7; --muted: #8f8e86;
+  --accent: #6aa6ee; --accent-soft: #1d2a3a; --bar: #3987e5;
+  --warn-bg: #3a2f14; --warn-text: #f3d48a;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--text);
+  font: 15px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+a { color: var(--accent); }
+.wrap { max-width: 1040px; margin: 0 auto; padding: 24px 16px 64px; }
+header h1 { font-size: 26px; margin: 0 0 4px; letter-spacing: -0.01em; }
+header p { margin: 0; color: var(--text-2); }
+.links { margin-top: 8px; font-size: 13px; display: flex; gap: 14px; flex-wrap: wrap; }
+.chips { display: flex; gap: 8px; flex-wrap: wrap; margin: 20px 0 8px; position: sticky; top: 0;
+  background: var(--bg); padding: 10px 0; z-index: 2; }
+.chip { border: 1px solid var(--border); background: var(--surface); color: var(--text-2);
+  border-radius: 999px; padding: 6px 14px; font: inherit; font-size: 14px; cursor: pointer; }
+.chip[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #fff; }
+h2 { font-size: 18px; margin: 32px 0 12px; }
+h2 small { color: var(--muted); font-weight: 400; font-size: 13px; margin-left: 6px; }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+  padding: 16px 18px; margin-bottom: 12px; }
+.card h3 { font-size: 16px; margin: 0 0 6px; line-height: 1.35; }
+.card h3 a { color: var(--text); text-decoration: none; }
+.card h3 a:hover { text-decoration: underline; }
+.meta { color: var(--muted); font-size: 13px; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.pill { font-size: 12px; padding: 1px 8px; border-radius: 999px; background: var(--accent-soft); color: var(--text-2); }
+.pill.pre { background: var(--warn-bg); color: var(--warn-text); }
+.one { margin: 10px 0 6px; font-size: 15px; }
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+th, td { text-align: left; padding: 7px 8px; border-bottom: 1px solid var(--border); vertical-align: top; }
+th { color: var(--text-2); font-weight: 600; font-size: 13px; }
+th button { all: unset; cursor: pointer; }
+th button::after { content: " ↕"; color: var(--muted); }
+td.num { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.kr td:first-child { color: var(--text-2); width: 34%; }
+.kr q { color: var(--muted); font-size: 13px; }
+.sowhat { margin: 10px 0 0; padding: 0; list-style: none; font-size: 14px; }
+.sowhat li { margin: 4px 0; }
+.sowhat b { text-transform: capitalize; }
+.ai { font-size: 12px; color: var(--muted); margin-top: 10px; }
+details summary { cursor: pointer; color: var(--accent); font-size: 14px; margin-top: 8px; }
+.abstract { color: var(--text-2); font-size: 14px; white-space: pre-line; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+.bars { display: grid; gap: 6px; }
+.bar-row { display: grid; grid-template-columns: 96px 1fr 36px; align-items: center; gap: 8px; font-size: 13px; }
+.bar-row span:first-child { color: var(--text-2); text-transform: capitalize; }
+.bar-track { height: 14px; }
+.bar { height: 14px; background: var(--bar); border-radius: 0 4px 4px 0; min-width: 2px; }
+.bar-row:hover .bar { filter: brightness(1.15); }
+.bar-row .num { color: var(--text); text-align: right; }
+.list .row { padding: 10px 0; border-bottom: 1px solid var(--border); }
+.list .row a { color: var(--text); font-weight: 500; text-decoration: none; }
+.list .row a:hover { text-decoration: underline; }
+.search { width: 100%; padding: 9px 12px; border-radius: 8px; border: 1px solid var(--border);
+  background: var(--surface); color: var(--text); font: inherit; margin-bottom: 8px; }
+.scroll { overflow-x: auto; }
+.empty { color: var(--muted); font-size: 14px; }
+footer { margin-top: 40px; color: var(--muted); font-size: 12px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Pancreas Radar</h1>
+    <p id="sub"></p>
+    <div class="links">
+      <a href="digest.xml">Digest RSS</a>
+      <a href="events.ics">Events calendar (.ics)</a>
+      <a href="podcast.xml" id="podlink" hidden>Podcast feed</a>
+    </div>
+  </header>
+
+  <div class="chips" role="group" aria-label="Filter by lens" id="chips"></div>
+
+  <h2>Top of the week <small>ranked by study type, phase, journal and relevance</small></h2>
+  <div id="top"></div>
+
+  <div class="grid">
+    <div class="card"><h3>Items by lens</h3><div class="bars" id="lensbars"></div></div>
+    <div class="card"><h3>New trials by phase</h3><div class="bars" id="phasebars"></div></div>
+  </div>
+
+  <h2>New trials <small>registered this week on ClinicalTrials.gov</small></h2>
+  <div class="card scroll"><table id="trials"></table></div>
+
+  <h2>Regulatory, devices &amp; industry <small>FDA decisions and news headlines</small></h2>
+  <div class="card list" id="reg"></div>
+
+  <h2>Upcoming events</h2>
+  <div class="card scroll"><table id="events"></table></div>
+
+  <h2>Everything else <small id="restcount"></small></h2>
+  <input class="search" id="q" type="search" placeholder="Search titles, journals, sponsors…">
+  <div class="card list" id="rest"></div>
+
+  <footer>
+    AI summaries are generated from public abstracts only. Numbers are checked against the source text, but
+    always verify against the original before citing. Preprints are not peer reviewed.
+  </footer>
+</div>
+
+<script>
+const DATA = /*__DATA__*/null;
+const LENSES = ["all", "clinical", "science", "regulatory", "business", "strategic"];
+let lens = "all";
+try { lens = localStorage.getItem("radar-lens") || "all"; } catch (e) {}
+
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const venue = v => String(v || "").split(/ :| \(/)[0];
+const inLens = it => lens === "all" || (it.lenses || []).includes(lens);
+const TYPE = {paper:"Paper", guideline:"Guideline", preprint:"Preprint", trial_new:"New trial",
+              regulatory:"Regulatory", grant:"NIH grant", news:"News"};
+
+function pills(it) {
+  const t = `<span class="pill${it.type === "preprint" ? " pre" : ""}">${TYPE[it.type] || it.type}</span>`;
+  return t + (it.lenses || []).map(l => `<span class="pill">${l}</span>`).join("");
+}
+
+function card(it) {
+  const s = it.summary;
+  let body = "";
+  if (s) {
+    body += `<p class="one">${esc(s.one_liner)}</p>`;
+    const facts = [["Design", s.design], ["Population", s.population]].filter(f => f[1]);
+    const rows = facts.map(f => `<tr><td>${f[0]}</td><td>${esc(f[1])}</td></tr>`).join("") +
+      (s.key_results || []).map(r => `<tr><td>${esc(r.label)}</td><td class="num"><b>${esc(r.value)}</b><br><q>${esc(r.quote)}</q></td></tr>`).join("");
+    if (rows) body += `<table class="kr">${rows}</table>`;
+    const sw = Object.entries(s.so_what || {}).filter(([, v]) => v);
+    if (sw.length) body += `<ul class="sowhat">${sw.map(([k, v]) => `<li><b>${esc(k)}:</b> ${esc(v)}</li>`).join("")}</ul>`;
+    if (s.caveats) body += `<p class="ai"><b>Caveat:</b> ${esc(s.caveats)}</p>`;
+    body += `<p class="ai">AI-generated from the abstract${s.dropped_unverified ? ` · ${s.dropped_unverified} unverifiable number(s) removed` : ""} — verify before citing.</p>`;
+  }
+  if (it.abstract) body += `<details><summary>${s ? "Source text" : "Abstract"}</summary><p class="abstract">${esc(it.abstract)}</p></details>`;
+  return `<article class="card"><h3><a href="${esc(it.url)}" target="_blank" rel="noopener">${esc(it.title)}</a></h3>
+    <div class="meta">${pills(it)}<span>${esc(venue(it.venue))}</span><span>${esc(it.date)}</span></div>${body}</article>`;
+}
+
+function bars(el, counts) {
+  const entries = Object.entries(counts);
+  const max = Math.max(1, ...entries.map(e => e[1]));
+  el.innerHTML = entries.length ? entries.map(([k, v]) =>
+    `<div class="bar-row" title="${esc(k)}: ${v}"><span>${esc(k)}</span>
+      <div class="bar-track"><div class="bar" style="width:${(v / max) * 100}%"></div></div>
+      <span class="num">${v}</span></div>`).join("") : `<p class="empty">No data this week.</p>`;
+}
+
+let trialSort = {key: "phase", dir: -1};
+const PHASE_ORDER = {PHASE3: 4, PHASE2: 3, PHASE1: 2, EARLY_PHASE1: 1, NA: 0};
+function trialsTable(trials) {
+  const el = document.getElementById("trials");
+  if (!trials.length) { el.innerHTML = `<tr><td class="empty">No new trials in this lens.</td></tr>`; return; }
+  const val = (t, k) => k === "phase" ? Math.max(0, ...(t.extra.phases || []).map(p => PHASE_ORDER[p] || 0))
+    : k === "enroll" ? (t.extra.enrollment || 0) : k === "sponsor" ? t.venue.toLowerCase() : t.title.toLowerCase();
+  const rows = [...trials].sort((a, b) => (val(a, trialSort.key) > val(b, trialSort.key) ? 1 : -1) * trialSort.dir);
+  const th = (k, label) => `<th><button data-k="${k}">${label}</button></th>`;
+  el.innerHTML = `<thead><tr>${th("title", "Trial")}${th("phase", "Phase")}${th("sponsor", "Sponsor")}${th("enroll", "Target n")}<th>Status</th></tr></thead><tbody>` +
+    rows.map(t => `<tr><td><a href="${esc(t.url)}" target="_blank" rel="noopener">${esc(t.title)}</a><br><small>${esc((t.extra.interventions || []).join(", "))}</small></td>
+      <td>${esc((t.extra.phases || []).join("/").replace(/PHASE/g, "P") || "—")}</td><td>${esc(t.venue)}</td>
+      <td class="num">${t.extra.enrollment ?? "—"}</td><td>${esc((t.extra.status || "").replace(/_/g, " ").toLowerCase())}</td></tr>`).join("") + "</tbody>";
+  el.querySelectorAll("th button").forEach(b => b.onclick = () => {
+    trialSort = {key: b.dataset.k, dir: trialSort.key === b.dataset.k ? -trialSort.dir : -1};
+    trialsTable(trials);
+  });
+}
+
+function row(it) {
+  return `<div class="row"><a href="${esc(it.url)}" target="_blank" rel="noopener">${esc(it.title)}</a>
+    <div class="meta">${pills(it)}<span>${esc(venue(it.venue))}</span><span>${esc(it.date)}</span></div></div>`;
+}
+
+function render() {
+  const items = DATA.items.filter(inLens);
+  const top = items.filter(i => i.type !== "trial_new").slice(0, DATA.top_n);
+  const topIds = new Set(top.map(i => i.id));
+  document.getElementById("top").innerHTML = top.map(card).join("") || `<p class="empty">Nothing in this lens this week.</p>`;
+
+  const lc = {};
+  for (const l of LENSES.slice(1)) lc[l] = DATA.items.filter(i => (i.lenses || []).includes(l)).length;
+  bars(document.getElementById("lensbars"), lc);
+
+  const trials = items.filter(i => i.type === "trial_new");
+  const PHASE_LABEL = {EARLY_PHASE1: "Early phase 1", PHASE1: "Phase 1", PHASE2: "Phase 2", PHASE3: "Phase 3", PHASE4: "Phase 4", NA: "Not applicable"};
+  const raw = {};
+  for (const t of DATA.items.filter(i => i.type === "trial_new")) {
+    const p = (t.extra.phases || []).map(x => PHASE_LABEL[x] || x).join(" / ") || "Observational";
+    raw[p] = (raw[p] || 0) + 1;
+  }
+  const rank = k => ["Early", "Phase 1", "Phase 2", "Phase 3", "Phase 4", "Not", "Obs"].findIndex(s => k.startsWith(s));
+  const pc = Object.fromEntries(Object.entries(raw).sort((a, b) => rank(a[0]) - rank(b[0])));
+  bars(document.getElementById("phasebars"), pc);
+  trialsTable(trials);
+
+  const reg = items.filter(i => ["regulatory", "news"].includes(i.type) && !topIds.has(i.id));
+  document.getElementById("reg").innerHTML = reg.map(row).join("") || `<p class="empty">No regulatory or industry items in this lens.</p>`;
+
+  const q = document.getElementById("q").value.trim().toLowerCase();
+  const rest = items.filter(i => !topIds.has(i.id) && !["trial_new", "regulatory", "news"].includes(i.type))
+    .filter(i => !q || `${i.title} ${i.venue}`.toLowerCase().includes(q));
+  document.getElementById("restcount").textContent = `${rest.length} items`;
+  document.getElementById("rest").innerHTML = rest.map(row).join("") || `<p class="empty">No matches.</p>`;
+
+  document.querySelectorAll(".chip").forEach(c => c.setAttribute("aria-pressed", c.dataset.lens === lens));
+}
+
+document.getElementById("sub").textContent =
+  `Week of ${DATA.since} → ${DATA.until} · ${DATA.items.length} items from ${DATA.sources.length} sources · updated ${DATA.generated}`;
+document.getElementById("chips").innerHTML = LENSES.map(l =>
+  `<button class="chip" data-lens="${l}" aria-pressed="false">${l[0].toUpperCase() + l.slice(1)}</button>`).join("");
+document.querySelectorAll(".chip").forEach(c => c.onclick = () => {
+  lens = c.dataset.lens;
+  try { localStorage.setItem("radar-lens", lens); } catch (e) {}
+  render();
+});
+document.getElementById("q").oninput = render;
+if (DATA.podcast) document.getElementById("podlink").hidden = false;
+
+const today = DATA.until;
+const ev = DATA.events.filter(e => (e.end || e.start) >= today);
+document.getElementById("events").innerHTML = ev.length
+  ? `<thead><tr><th>Date</th><th>Event</th><th>Location</th><th>Lens</th></tr></thead><tbody>` +
+    ev.map(e => `<tr><td class="num">${esc(e.start)}${e.end && e.end !== e.start ? " – " + esc(e.end) : ""}${e.verify ? "<br><small>dates unverified</small>" : ""}</td>
+      <td><a href="${esc(e.url)}" target="_blank" rel="noopener">${esc(e.name)}</a>${e.deadline ? `<br><small>Deadline ${esc(e.deadline)}</small>` : ""}</td>
+      <td>${esc(e.location)}</td><td>${esc(e.lens)}</td></tr>`).join("") + "</tbody>"
+  : `<tr><td class="empty">No upcoming events — add some in config/events.yaml.</td></tr>`;
+render();
+</script>
+</body>
+</html>

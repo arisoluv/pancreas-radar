@@ -1,0 +1,40 @@
+# Hand-curated events. Review quarterly (rotate owner). Dates MUST be verified on the
+# official site before adding — entries marked `verify: true` are placeholders to confirm.
+# Fields: name, start (YYYY-MM-DD), end, location, url, lens, deadline (abstract/registration, optional)
+
+events:
+  - name: ASCO Gastrointestinal Cancers Symposium
+    start: 2027-01-21
+    end: 2027-01-23
+    location: San Francisco, CA
+    url: https://conferences.asco.org/gi
+    lens: clinical
+    verify: true
+  - name: SIR Annual Scientific Meeting (Society of Interventional Radiology)
+    start: 2027-03-01
+    end: 2027-03-05
+    location: TBD
+    url: https://www.sirweb.org
+    lens: strategic
+    verify: true
+  - name: AACR Annual Meeting
+    start: 2027-04-01
+    end: 2027-04-01
+    location: TBD
+    url: https://www.aacr.org
+    lens: science
+    verify: true
+  - name: Digestive Disease Week (DDW)
+    start: 2027-05-01
+    end: 2027-05-01
+    location: TBD
+    url: https://ddw.org
+    lens: clinical
+    verify: true
+  - name: ASCO Annual Meeting
+    start: 2027-05-28
+    end: 2027-06-01
+    location: Chicago, IL
+    url: https://conferences.asco.org
+    lens: clinical
+    verify: true

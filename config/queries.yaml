@@ -1,0 +1,93 @@
+# Pancreas Radar: what to collect and how to rank it.
+# This is the one file a non-coder should need to edit.
+
+lookback_days: 7          # window for papers, trials, news
+grants_lookback_days: 30  # NIH awards are sparse; look further back
+top_n: 5                  # items in the "Top of the week"
+summarize_top: 15         # how many top items get an AI summary (0 = off)
+
+sources:
+  pubmed:
+    enabled: true
+    term: >-
+      ("pancreatic neoplasms"[MeSH] OR "pancreatic cancer"[tiab] OR "pancreatic adenocarcinoma"[tiab]
+      OR PDAC[tiab] OR "pancreatic ductal"[tiab])
+    max_results: 300
+  europepmc_preprints:
+    enabled: true
+    query: '("pancreatic cancer" OR "pancreatic adenocarcinoma" OR PDAC)'
+    max_results: 100
+  clinicaltrials:
+    enabled: true
+    condition: pancreatic cancer
+    max_results: 100
+  openfda_devices:
+    enabled: true
+    # Cross-cancer device scope: keep this list strict or it drowns the feed.
+    device_terms: [ablation, embolization, "biliary stent", "pancreatic stent", endoscopic ultrasound,
+                   electroporation, histotripsy, brachytherapy, radioembolization, "fine needle"]
+  nih_reporter:
+    enabled: true
+    text: pancreatic cancer
+  rss:
+    enabled: true
+    # Headlines + links only. Items must match `rss_filter` keywords to be kept.
+    feeds:
+      - {name: FDA press releases, url: "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml"}
+      - {name: MedTech Dive, url: "https://www.medtechdive.com/feeds/news/"}
+      - {name: Google News – pancreatic cancer, url: "https://news.google.com/rss/search?q=%22pancreatic+cancer%22+(FDA+OR+trial+OR+approval+OR+acquisition)&hl=en-US&gl=US&ceid=US:en"}
+      - {name: Google News – interventional oncology, url: "https://news.google.com/rss/search?q=%22interventional+oncology%22+OR+histotripsy+OR+%22tumor+ablation%22&hl=en-US&gl=US&ceid=US:en"}
+    rss_filter: [pancrea, PDAC, ablation, histotripsy, embolization, interventional oncology, KRAS]
+
+# Lens tagging: an item gets a lens if any keyword appears in title/abstract (case-insensitive).
+lenses:
+  clinical: [randomized, randomised, phase 3, phase iii, phase 2, phase ii, overall survival, progression-free,
+             neoadjuvant, adjuvant, resection, pancreatectomy, whipple, chemotherapy, folfirinox, gemcitabine,
+             guideline, screening, radiotherapy, endoscopic]
+  science: [kras, mutation, tumor microenvironment, stroma, organoid, single-cell, mouse, mechanism, biomarker,
+            ctdna, liquid biopsy, immunotherapy, vaccine, genomic, caf, fibroblast]
+  regulatory: [fda, " ema ", "510(k)", premarket, de novo, breakthrough therapy, breakthrough device, clearance,
+               orphan drug, accelerated approval, marketing authorization, cms, reimbursement]
+  business: [acquisition, acquire, funding, financing, ipo, partnership, licens, revenue, market, investment, startup, raises, deal]
+  strategic: [first-in-class, unmet need, landscape, real-world, cost-effectiveness, health economic, access,
+              disparities, artificial intelligence, machine learning, early detection, medical device]
+
+# Ranking weights (higher = more important).
+weights:
+  type: {guideline: 6, trial_new: 3, regulatory: 5, paper: 1, preprint: 0, grant: 1, news: 2}
+  pubtype:  # PubMed publication types
+    Practice Guideline: 6
+    Guideline: 6
+    Randomized Controlled Trial: 5
+    Clinical Trial, Phase III: 5
+    Meta-Analysis: 4
+    Systematic Review: 3
+    Clinical Trial, Phase II: 3
+    Multicenter Study: 1
+    Case Reports: -3
+    Comment: -2
+    Editorial: -2
+    Letter: -3
+  phase: {PHASE3: 4, PHASE2: 2, PHASE1: 1, EARLY_PHASE1: 0}
+  journals:  # exact NLM journal name, lowercase, without "the " and the part after " :"
+    new england journal of medicine: 5
+    lancet: 4
+    lancet. oncology: 4
+    lancet. gastroenterology & hepatology: 4
+    jama: 4
+    jama oncology: 4
+    jama surgery: 3
+    nature: 3
+    nature medicine: 4
+    journal of clinical oncology: 4
+    annals of oncology: 3
+    gastroenterology: 3
+    gut: 3
+    cancer cell: 3
+    cancer discovery: 3
+    annals of surgery: 3
+    clinical cancer research: 2
+    nature reviews. clinical oncology: 2
+    pancreatology: 1
+    annals of surgical oncology: 1
+  keyword_boost: {kras: 2, pdac: 1, "phase 3": 2, "overall survival": 1, histotripsy: 2, "early detection": 2}

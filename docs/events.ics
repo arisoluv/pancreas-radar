@@ -1,0 +1,51 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Pancreas Radar//Events//EN
+X-WR-CALNAME:Pancreas Radar events
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:pancreas-radar-0-20270121@radar
+DTSTAMP:20261016T231231Z
+DTSTART;VALUE=DATE:20270121
+DTEND;VALUE=DATE:20270124
+SUMMARY:ASCO Gastrointestinal Cancers Symposium
+LOCATION:San Francisco\, CA
+DESCRIPTION:https://conferences.asco.org/gi\n(Dates unverified — check the official site)
+END:VEVENT
+BEGIN:VEVENT
+UID:pancreas-radar-1-20270301@radar
+DTSTAMP:20261016T231231Z
+DTSTART;VALUE=DATE:20270301
+DTEND;VALUE=DATE:20270306
+SUMMARY:SIR Annual Scientific Meeting (Society of Interventional Radiology)
+LOCATION:TBD
+DESCRIPTION:https://www.sirweb.org\n(Dates unverified — check the official site)
+END:VEVENT
+BEGIN:VEVENT
+UID:pancreas-radar-2-20270401@radar
+DTSTAMP:20261016T231231Z
+DTSTART;VALUE=DATE:20270401
+DTEND;VALUE=DATE:20270402
+SUMMARY:AACR Annual Meeting
+LOCATION:TBD
+DESCRIPTION:https://www.aacr.org\n(Dates unverified — check the official site)
+END:VEVENT
+BEGIN:VEVENT
+UID:pancreas-radar-3-20270501@radar
+DTSTAMP:20261016T231231Z
+DTSTART;VALUE=DATE:20270501
+DTEND;VALUE=DATE:20270502
+SUMMARY:Digestive Disease Week (DDW)
+LOCATION:TBD
+DESCRIPTION:https://ddw.org\n(Dates unverified — check the official site)
+END:VEVENT
+BEGIN:VEVENT
+UID:pancreas-radar-4-20270528@radar
+DTSTAMP:20261016T231231Z
+DTSTART;VALUE=DATE:20270528
+DTEND;VALUE=DATE:20270602
+SUMMARY:ASCO Annual Meeting
+LOCATION:Chicago\, IL
+DESCRIPTION:https://conferences.asco.org\n(Dates unverified — check the official site)
+END:VEVENT
+END:VCALENDAR
