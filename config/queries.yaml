@@ -33,7 +33,6 @@ sources:
     enabled: true
     # Headlines + links only. Items must match `rss_filter` keywords to be kept.
     feeds:
-      - {name: FDA press releases, url: "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml"}
       - {name: MedTech Dive, url: "https://www.medtechdive.com/feeds/news/"}
       - {name: Google News – pancreatic cancer, url: "https://news.google.com/rss/search?q=%22pancreatic+cancer%22+(FDA+OR+trial+OR+approval+OR+acquisition)&hl=en-US&gl=US&ceid=US:en"}
       - {name: Google News – interventional oncology, url: "https://news.google.com/rss/search?q=%22interventional+oncology%22+OR+histotripsy+OR+%22tumor+ablation%22&hl=en-US&gl=US&ceid=US:en"}
