@@ -1,4 +1,4 @@
-# Pancreas Radar: what to collect and how to rank it.
+# Pancreatic Cancer Radar: what to collect and how to rank it.
 # This is the one file a non-coder should need to edit.
 
 lookback_days: 7          # window for papers, trials, news

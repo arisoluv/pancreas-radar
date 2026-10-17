@@ -1,1 +1,1 @@
-"""Pancreas Radar: weekly pancreatic cancer intelligence digest."""
+"""Pancreatic Cancer Radar: weekly pancreatic cancer intelligence digest."""

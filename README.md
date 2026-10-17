@@ -1,4 +1,4 @@
-# Pancreas Radar
+# Pancreatic Cancer Radar
 
 A weekly digest of pancreatic cancer research, new trials, FDA device decisions, NIH grants, industry news and events. Each item is tagged with one or more of five lenses (clinical, science, regulatory, business, strategic). It costs $0 to run: GitHub Actions + GitHub Pages + Microsoft 365 standard connectors.
 

@@ -13,7 +13,7 @@ def digest_rss(digests, site_url):
                         for it in d["top"])
         pub = datetime.fromisoformat(d["week"]).replace(hour=12, tzinfo=timezone.utc)
         entries.append(f"""  <item>
-    <title>Pancreas Radar — week of {d['week']}</title>
+    <title>Pancreatic Cancer Radar — week of {d['week']}</title>
     <link>{escape(site_url)}#week-{d['week']}</link>
     <guid isPermaLink="false">pancreas-radar-{d['week']}</guid>
     <pubDate>{format_datetime(pub)}</pubDate>
@@ -21,7 +21,7 @@ def digest_rss(digests, site_url):
   </item>""")
     return f"""<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0"><channel>
-  <title>Pancreas Radar — weekly digest</title>
+  <title>Pancreatic Cancer Radar — weekly digest</title>
   <link>{escape(site_url)}</link>
   <description>Top pancreatic cancer research, trials, regulatory and industry news each week.</description>
 {chr(10).join(entries)}
@@ -35,8 +35,8 @@ def _ics_text(s):
 
 def events_ics(events):
     stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
-    out = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Pancreas Radar//Events//EN",
-           "X-WR-CALNAME:Pancreas Radar events", "CALSCALE:GREGORIAN"]
+    out = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Pancreatic Cancer Radar//Events//EN",
+           "X-WR-CALNAME:Pancreatic Cancer Radar events", "CALSCALE:GREGORIAN"]
     for i, e in enumerate(events):
         end = e.get("end") or e["start"]
         # all-day events: DTEND is exclusive, so add one day
